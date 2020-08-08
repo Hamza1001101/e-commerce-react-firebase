@@ -21,4 +21,6 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => {
   );
 };
 
+//The withRouter is a higher order component.
+//helps us to prevent prop drilling.
 export default withRouter(MenuItem);
