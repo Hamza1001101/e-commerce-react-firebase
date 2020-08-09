@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import Shop from './pages/shop/Shop';
 import Header from './components/header/Header';
 import SingUpAndSingIn from './pages/sing-in-and -sing-up/SingUpAndSingIn';
-import { auth } from './firebase/firebase';
+import { auth, createUserProfileDocument } from './firebase/firebase';
 
 class App extends Component {
   constructor(props) {
@@ -21,11 +21,22 @@ class App extends Component {
    * other wise this will lead some memory leak.
    */
   unsubscribeFromAuth = null;
+
   componentDidMount() {
     //open subscribtion
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      //createUserProfileDocument(user);
+      // this.setState({ currentUser: user });
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            currentUser: { id: snapShot.id, ...snapShot.data() },
+          });
+        });
+      }
+      this.setState({ currentUser: userAuth });
     });
   }
 
@@ -33,7 +44,6 @@ class App extends Component {
    * Unsubscribing the auth state whenever the component will unmount.
    * close the subscribtion.
    */
-
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
