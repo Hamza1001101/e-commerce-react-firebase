@@ -64,3 +64,5 @@ export default firebase;
 firestore.collection('user').doc('ksifsfksf').collection('cartTime').doc();
 
 firestore.doc('/users/id/cartItems/kiskdf'); */
+
+//The coming sections we're going to get to know Redux. which is a state management
