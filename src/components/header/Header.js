@@ -4,9 +4,12 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase';
 import { connect } from 'react-redux';
 
+import CartIcon from '../cart-icon/CartIcon';
+import CartDropdown from '../cart-dropdown/CartDropdown';
+
 import './header.scss';
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className='header'>
       <Link className='Logo-container' to='/'>
@@ -29,7 +32,9 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+        <CartIcon />
       </div>
+      {hidden ? null : <CartDropdown />}
     </div>
   );
 };
@@ -38,8 +43,18 @@ const Header = ({ currentUser }) => {
  * this naming can be anything but mapStateToProps is standard
  * with redux codebases
  */
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+// });
+
+/**
+ * Anothe way of advance destructuring.
+ *
+ */
+
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser,
+  hidden,
 });
 
 /**
