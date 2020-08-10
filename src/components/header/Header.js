@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase';
+import { connect } from 'react-redux';
 
 import './header.scss';
 
@@ -33,4 +34,15 @@ const Header = ({ currentUser }) => {
   );
 };
 
-export default Header;
+/**
+ * this naming can be anything but mapStateToProps is standard
+ * with redux codebases
+ */
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+/**
+ *connect is an higher order component.
+ */
+export default connect(mapStateToProps)(Header);

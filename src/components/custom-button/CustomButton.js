@@ -14,3 +14,6 @@ const CustomButton = ({ children, isGoogleSignIn, ...otherProps }) => {
 };
 
 export default CustomButton;
+
+/** Redux is using flex pattern architecture.  */
+/** update user Reducer with payLaod */
