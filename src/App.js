@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
-import './App.css';
-import HomePage from './pages/homepage/HomePage';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Shop from './pages/shop/Shop';
-import Header from './components/header/Header';
-import SingUpAndSingIn from './pages/sing-in-and -sing-up/SingUpAndSingIn';
-import { auth, createUserProfileDocument } from './firebase/firebase';
 
+import { auth, createUserProfileDocument } from './firebase/firebase';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user-actions';
+import { selectCurrentUser } from './redux/user/user-selector';
+import { createStructuredSelector } from 'reselect';
+
+import Header from './components/header/Header';
+
+import SingUpAndSingIn from './pages/sing-in-and -sing-up/SingUpAndSingIn';
+import Shop from './pages/shop/Shop';
+import Checkout from './pages/checkout/Checkout';
+import HomePage from './pages/homepage/HomePage';
+import './App.css';
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     currentUser: null,
-  //   };
-  // }
-
   /**
    * import to unsubscribe the auth state
    * other wise this will lead some memory leak.
@@ -70,13 +67,16 @@ class App extends Component {
               this.props.currentUser ? <Redirect to='/' /> : <SingUpAndSingIn />
             }
           />
+          <Route exact path='/checkout' component={Checkout} />
         </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user }) => ({ currentUser: user.currentUser });
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
